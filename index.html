@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yang Jinfong | Portfolio & Weather App</title>
+    <title>Yang Jinfong | Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* ================= Portfolio 原有樣式 ================= */
+        /* ================= Portfolio 核心與共用樣式 ================= */
         :root {
             --primary: #3b82f6;
             --accent: #10b981;
@@ -22,6 +22,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         body { font-family: 'Poppins', 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--dark); overflow-x: hidden; }
 
+        /* 導航列 */
         nav {
             position: fixed; width: 100%; top: 0; z-index: 1000;
             background: var(--glass); backdrop-filter: blur(10px);
@@ -32,6 +33,7 @@
         .nav-links a { text-decoration: none; color: var(--dark); margin-left: 25px; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--primary); }
 
+        /* Hero 區塊 */
         .hero {
             height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
             background: radial-gradient(circle at top right, #dbeafe, transparent), radial-gradient(circle at bottom left, #fef3c7, transparent);
@@ -43,17 +45,28 @@
         .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6); }
 
+        /* 容器與標題 */
         .container { max-width: 1100px; margin: 80px auto; padding: 0 20px; }
         .section-title { text-align: center; margin-bottom: 50px; }
         .section-title h2 { font-size: 2.2rem; display: inline-block; position: relative; padding-bottom: 10px; }
         .section-title h2::after { content: ''; position: absolute; bottom: 0; left: 25%; width: 50%; height: 4px; background: var(--primary); border-radius: 2px; }
 
+        /* 技能卡片 */
         .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         .skill-card { background: white; padding: 30px; border-radius: 20px; transition: 0.3s; border: 1px solid rgba(0,0,0,0.03); }
         .skill-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
         .skill-card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; }
         .skill-tag { display: inline-block; background: #eff6ff; color: var(--primary); padding: 4px 12px; border-radius: 15px; font-size: 0.85rem; margin: 4px; font-weight: 500; }
 
+        /* 專案卡片 */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
+        .project-card { background: white; border-radius: 20px; overflow: hidden; position: relative; border: 1px solid rgba(0,0,0,0.05); transition: 0.3s; }
+        .project-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .project-content { padding: 25px; }
+        .project-content h3 { margin-bottom: 10px; color: var(--dark); margin-top: 10px; }
+        .project-content p { color: #64748b; font-size: 0.95rem; margin-bottom: 15px; }
+
+        /* 時間軸 */
         .timeline { position: relative; max-width: 800px; margin: 0 auto; }
         .timeline::after { content: ''; position: absolute; width: 2px; background: #e2e8f0; top: 0; bottom: 0; left: 50%; margin-left: -1px; }
         .timeline-item { padding: 10px 40px; position: relative; width: 50%; }
@@ -79,8 +92,8 @@
         .weather-app-wrapper {
             background-color: #1a1a1a; border-radius: 20px; padding: 30px; color: #f0f0f0;
             box-shadow: 0 20px 40px rgba(0,0,0,0.2); margin-top: 30px; position: relative; overflow: hidden;
+            text-align: left;
         }
-
         .weather-app-wrapper * { box-sizing: border-box; }
         
         .w-header { background: rgba(30, 30, 30, 0.85); padding: 25px; border-radius: 12px; margin-bottom: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
@@ -140,8 +153,9 @@
         <div class="nav-links">
             <a href="#about">關於</a>
             <a href="#skills">技能</a>
-            <a href="#projects">歷程與專案</a>
-            <a href="#weather-demo">天氣專案展示</a>
+            <a href="#projects">精選專案</a>
+            <a href="#weather-demo">天氣展示</a>
+            <a href="#timeline">歷程</a>
             <a href="https://github.com/alex921024" target="_blank"><i class="fab fa-github"></i></a>
         </div>
     </nav>
@@ -151,7 +165,7 @@
             <p>Hello, I'm</p>
             <h1>Yang Jinfong</h1>
             <p>就讀於南臺科技大學。熱衷於探索 <b>Web 全端開發</b> 與 <b>AI 機器學習</b> 的無限可能。</p>
-            <a href="#weather-demo" class="btn btn-primary">查看 Live Demo</a>
+            <a href="#projects" class="btn btn-primary">查看我的專案</a>
         </div>
     </header>
 
@@ -159,7 +173,7 @@
         <section id="about" data-aos="fade-up">
             <div class="section-title"><h2>關於我</h2></div>
             <div style="text-align: center; max-width: 800px; margin: 0 auto; font-size: 1.1rem; color: #475569;">
-                <p>我是一名專注於技術實踐的學生開發者。在南臺科大的學習過程中，我從基礎的 Java 與網路概論出發，逐步深入到 PHP/MySQL 網頁開發。最近我將重心放在生成式 AI (Stable Diffusion) 與電腦視覺 (YOLO/DINO) 的應用，致力於將 AI 技術整合進實務專案中。</p>
+                <p>我是一名專注於技術實踐的學生開發者。在南臺科大的學習過程中，我從基礎的 [Java] 與 [網路概論] 出發，逐步深入到 [PHP/MySQL 網頁開發]。最近我將重心放在 [生成式 AI (Stable Diffusion)] 與 [電腦視覺 (YOLO/DINO)] 的應用，致力於將 AI 技術整合進實務專案中。</p>
             </div>
         </section>
 
@@ -186,6 +200,44 @@
                     <p>伺服器架構建置與安全性加固。</p>
                     <span class="skill-tag">Apache</span> <span class="skill-tag">OpenSSL</span> 
                     <span class="skill-tag">OAuth 2.0</span> <span class="skill-tag">DDoS Research</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" data-aos="fade-up" style="margin-top: 80px;">
+            <div class="section-title"><h2>精選專案</h2></div>
+            <div class="project-grid">
+                <div class="project-card">
+                    <div class="project-content">
+                        <span class="skill-tag">Web App</span>
+                        <h3>即時地震監測地圖</h3>
+                        <p>整合 API 實作即時震度顯示，並開發後台管理系統與使用者評價機制。</p>
+                        <a href="https://github.com/alex921024" style="color: var(--primary); text-decoration: none; font-weight: 600;">了解更多 →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-content">
+                        <span class="skill-tag">AI/ML</span>
+                        <h3>Stable Diffusion UI 研究</h3>
+                        <p>深入研究 AI 繪圖工作流，優化模型生成效率與提示詞工程。</p>
+                        <a href="https://github.com/alex921024" style="color: var(--primary); text-decoration: none; font-weight: 600;">了解更多 →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-content">
+                        <span class="skill-tag">Security</span>
+                        <h3>OAuth 認證系統整合</h3>
+                        <p>基於 Google API 實作安全登入流程，解決跨網域與 Session 同步問題。</p>
+                        <a href="https://github.com/alex921024" style="color: var(--primary); text-decoration: none; font-weight: 600;">了解更多 →</a>
+                    </div>
+                </div>
+                <div class="project-card" style="border: 1px solid rgba(239, 68, 68, 0.3);">
+                    <div class="project-content">
+                        <span class="skill-tag" style="background: #fee2e2; color: #ef4444;">Security Demo</span>
+                        <h3>網路安全攻擊模擬器</h3>
+                        <p>實作終端機視覺化介面，結合動態封包傳輸動畫，模擬並解析 DDoS、SYN Flood 與 DNS 放大攻擊之運作原理。</p>
+                        <a href="security-simulator.html" style="color: #ef4444; text-decoration: none; font-weight: 600;">開始模擬 →</a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -283,6 +335,7 @@
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
+        // 初始化 AOS 滾動動畫
         AOS.init({ duration: 800, offset: 100, once: true });
 
         /* ================= Weather App (Open-Meteo) 前端邏輯 ================= */
@@ -291,7 +344,7 @@
             '新北市': { lat: 25.0170, lon: 121.4628, districts: ['板橋區', '中和區', '新莊區', '三重區'] },
             '桃園市': { lat: 24.9936, lon: 121.3010, districts: ['桃園區', '中壢區', '平鎮區', '八德區'] },
             '臺中市': { lat: 24.1477, lon: 120.6736, districts: ['西屯區', '南屯區', '北區', '中區'] },
-            '臺南市': { lat: 23.0261, lon: 120.2529, districts: ['永康區', '東區', '安平區', '中西區'] }, // 更新精確座標
+            '臺南市': { lat: 23.0261, lon: 120.2529, districts: ['永康區', '東區', '安平區', '中西區'] }, 
             '高雄市': { lat: 22.6273, lon: 120.3014, districts: ['苓雅區', '左營區', '三民區', '前鎮區'] },
             '宜蘭縣': { lat: 24.7021, lon: 121.7377, districts: ['宜蘭市', '羅東鎮', '礁溪鄉', '頭城鎮'] },
             '花蓮縣': { lat: 23.9778, lon: 121.6064, districts: ['花蓮市', '吉安鄉', '新城鄉', '壽豐鄉'] }
@@ -394,7 +447,7 @@
             const cityInfo = locationData[cityName];
 
             try {
-                // 向 Open-Meteo 請求 Hourly(溫度,濕度,降雨率) 與 Daily(最高最低溫,氣象碼)
+                // 向 Open-Meteo 請求資料
                 const url = `https://api.open-meteo.com/v1/forecast?latitude=${cityInfo.lat}&longitude=${cityInfo.lon}&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTaipei&forecast_days=7`;
                 const res = await fetch(url);
                 currentWeatherData = await res.json();
@@ -587,3 +640,4 @@
     </script>
 </body>
 </html>
+
