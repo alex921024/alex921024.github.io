@@ -77,22 +77,14 @@
 
         /* ================= Weather App 獨立封裝樣式 (深色主題) ================= */
         .weather-app-wrapper {
-            background-color: #1a1a1a;
-            border-radius: 20px;
-            padding: 30px;
-            color: #f0f0f0;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            margin-top: 30px;
-            position: relative;
-            overflow: hidden;
+            background-color: #1a1a1a; border-radius: 20px; padding: 30px; color: #f0f0f0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); margin-top: 30px; position: relative; overflow: hidden;
         }
 
         .weather-app-wrapper * { box-sizing: border-box; }
         
         .w-header { background: rgba(30, 30, 30, 0.85); padding: 25px; border-radius: 12px; margin-bottom: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
         .w-header h3 { color: #fff; margin-bottom: 10px; font-size: 1.8rem; }
-        .w-badges { display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap;}
-        .w-badge { display: inline-flex; align-items: center; background: rgba(0, 0, 0, 0.6); padding: 8px 15px; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.2); font-size: 0.9rem;}
         
         .w-fav-bar { display: none; gap: 10px; margin-bottom: 20px; padding: 15px; background: rgba(0, 0, 0, 0.4); border-radius: 8px; flex-wrap: wrap; align-items: center;}
         .w-fav-item { background: rgba(255, 255, 255, 0.1); color: #fff; padding: 6px 15px; border-radius: 20px; font-size: 0.9em; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.2); transition: 0.2s; }
@@ -105,7 +97,16 @@
         .w-btn-star { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); color: #ddd; font-size: 1.5rem; cursor: pointer; padding: 0 15px; border-radius: 8px; transition: 0.3s; display: flex; align-items: center; justify-content: center;}
         .w-btn-star.active { color: #ffd700; border-color: #ffd700; }
 
-        .w-chart-container { background: rgba(30, 30, 30, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin-bottom: 25px; height: 350px; display: none;}
+        /* --- 主分頁標籤樣式 --- */
+        .w-main-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .w-main-tab-btn { background: transparent; border: none; color: #aaa; font-size: 1.1rem; padding: 10px 20px; cursor: pointer; border-radius: 8px; transition: 0.3s; font-weight: bold; }
+        .w-main-tab-btn:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .w-main-tab-btn.active { background: #3b82f6; color: #fff; }
+        .w-tab-content { display: none; }
+        .w-tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .w-chart-container { background: rgba(30, 30, 30, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin-bottom: 25px; height: 350px;}
         
         .w-time-tabs { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 10px; }
         .w-time-tab { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #ccc; padding: 8px 16px; border-radius: 20px; cursor: pointer; white-space: nowrap; transition: 0.2s; font-size: 0.95rem; }
@@ -118,9 +119,17 @@
         .w-info-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; }
         .w-info-label { font-size: 0.85rem; color: #aaa; display: block; margin-bottom: 5px; }
         .w-info-val { font-size: 1.2rem; font-weight: bold; }
-        
         .w-advice { grid-column: 1 / -1; margin-top: 10px; padding: 15px; background: linear-gradient(90deg, rgba(62, 53, 73, 0.6), rgba(45, 45, 45, 0.6)); border-left: 4px solid #7c4dff; border-radius: 4px; text-align: left;}
         
+        /* 一週預報卡片 */
+        .w-daily-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; }
+        .w-daily-card { background: rgba(30, 30, 30, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 15px; text-align: center; transition: transform 0.2s;}
+        .w-daily-card:hover { transform: translateY(-5px); background: rgba(40, 40, 40, 0.9); }
+        .w-daily-date { font-weight: bold; color: #8c9eff; margin-bottom: 10px; }
+        .w-daily-icon { font-size: 2rem; margin: 10px 0; }
+        .w-daily-temp { margin-top: 10px; font-size: 1.1rem; color: #ff8a80;}
+        .w-daily-min { font-size: 0.9rem; color: #80d8ff; }
+
         .loading-overlay { display: none; text-align: center; padding: 40px; color: #8c9eff; font-weight: bold; }
     </style>
 </head>
@@ -182,18 +191,15 @@
         </section>
 
         <section id="weather-demo" data-aos="fade-up" style="margin-top: 80px;">
-            <div class="section-title"><h2>Live Demo: 即時天氣與地震監測系統</h2></div>
+            <div class="section-title"><h2>Live Demo: 無伺服器氣象系統</h2></div>
             <p style="text-align: center; color: #64748b; margin-bottom: 20px;">
-                此專案最初採用 PHP/MySQL 架構，為了在靜態網站中展示，我將其重構為<strong>純粹使用 JavaScript Fetch API</strong> 進行無伺服器 (Serverless) 呼叫中央氣象署資料，並結合 Chart.js 視覺化呈現。
+                採用 <strong>Open-Meteo 免費開源 API</strong>，不需任何金鑰即可取得全球即時天氣與降雨預測，並實作純前端的分頁切換邏輯。
             </p>
 
             <div class="weather-app-wrapper">
                 <div class="w-header">
                     <h3>即時氣象查詢</h3>
-                    <div id="w-location-display" style="color: #bbb;">請選擇地區開始查詢</div>
-                    <div class="w-badges" id="w-badges-container" style="display: none;">
-                        <div class="w-badge" id="badge-aqi"></div>
-                    </div>
+                    <div id="w-location-display" style="color: #bbb;">資料載入中...</div>
                 </div>
 
                 <div id="w-fav-container" class="w-fav-bar">
@@ -217,14 +223,25 @@
                     <button id="w-btn-star" class="w-btn-star" style="display:none;" title="加入最愛">☆</button>
                 </div>
 
-                <div id="w-loading" class="loading-overlay"><i class="fas fa-spinner fa-spin"></i> 資料載入中，請稍候...</div>
+                <div id="w-loading" class="loading-overlay"><i class="fas fa-spinner fa-spin"></i> 資料請求中，請稍候...</div>
 
-                <div class="w-chart-container" id="w-chart-container">
-                    <canvas id="w-tempChart"></canvas>
+                <div class="w-main-tabs" id="main-tabs-nav" style="display: none;">
+                    <button class="w-main-tab-btn active" onclick="switchMainTab('hourly')">即時與逐時預報</button>
+                    <button class="w-main-tab-btn" onclick="switchMainTab('daily')">未來一週天氣</button>
                 </div>
 
-                <div class="w-time-tabs" id="w-time-tabs"></div>
-                <div id="w-cards-container"></div>
+                <div id="tab-hourly" class="w-tab-content active">
+                    <div class="w-chart-container" id="w-chart-container" style="display: none;">
+                        <canvas id="w-tempChart"></canvas>
+                    </div>
+                    <div class="w-time-tabs" id="w-time-tabs"></div>
+                    <div id="w-cards-container"></div>
+                </div>
+
+                <div id="tab-daily" class="w-tab-content">
+                    <div class="w-daily-grid" id="w-daily-container"></div>
+                </div>
+
             </div>
         </section>
 
@@ -266,22 +283,18 @@
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        // 初始化動畫
         AOS.init({ duration: 800, offset: 100, once: true });
 
-        /* ================= Weather App 前端邏輯 ================= */
-        // 請替換為真實的氣象署授權碼
-        const CWA_API_KEY = 'YOUR_CWA_API_KEY'; 
-
-        const cityMap = {
-            '臺北市': 'F-D0047-061', '新北市': 'F-D0047-069', '桃園市': 'F-D0047-053',
-            '臺中市': 'F-D0047-073', '臺南市': 'F-D0047-077', '高雄市': 'F-D0047-065',
-            '基隆市': 'F-D0047-049', '新竹縣': 'F-D0047-009', '新竹市': 'F-D0047-053',
-            '苗栗縣': 'F-D0047-013', '彰化縣': 'F-D0047-017', '南投縣': 'F-D0047-021',
-            '雲林縣': 'F-D0047-025', '嘉義縣': 'F-D0047-029', '嘉義市': 'F-D0047-057',
-            '屏東縣': 'F-D0047-033', '宜蘭縣': 'F-D0047-001', '花蓮縣': 'F-D0047-041',
-            '臺東縣': 'F-D0047-037', '澎湖縣': 'F-D0047-045', '金門縣': 'F-D0047-085',
-            '連江縣': 'F-D0047-081'
+        /* ================= Weather App (Open-Meteo) 前端邏輯 ================= */
+        const locationData = {
+            '臺北市': { lat: 25.0330, lon: 121.5654, districts: ['中正區', '大安區', '信義區', '中山區'] },
+            '新北市': { lat: 25.0170, lon: 121.4628, districts: ['板橋區', '中和區', '新莊區', '三重區'] },
+            '桃園市': { lat: 24.9936, lon: 121.3010, districts: ['桃園區', '中壢區', '平鎮區', '八德區'] },
+            '臺中市': { lat: 24.1477, lon: 120.6736, districts: ['西屯區', '南屯區', '北區', '中區'] },
+            '臺南市': { lat: 23.0261, lon: 120.2529, districts: ['永康區', '東區', '安平區', '中西區'] }, // 更新精確座標
+            '高雄市': { lat: 22.6273, lon: 120.3014, districts: ['苓雅區', '左營區', '三民區', '前鎮區'] },
+            '宜蘭縣': { lat: 24.7021, lon: 121.7377, districts: ['宜蘭市', '羅東鎮', '礁溪鄉', '頭城鎮'] },
+            '花蓮縣': { lat: 23.9778, lon: 121.6064, districts: ['花蓮市', '吉安鄉', '新城鄉', '壽豐鄉'] }
         };
 
         const citySelect = document.getElementById('w-city-select');
@@ -291,9 +304,9 @@
         let chartInstance = null;
 
         // 初始化縣市選單
-        Object.keys(cityMap).forEach(city => {
+        Object.keys(locationData).forEach(city => {
             let opt = document.createElement('option');
-            opt.value = cityMap[city];
+            opt.value = city;
             opt.textContent = city;
             citySelect.appendChild(opt);
         });
@@ -308,148 +321,157 @@
             const container = document.getElementById('w-fav-container');
             const list = document.getElementById('w-fav-list');
             list.innerHTML = '';
-            
             if (favs.length === 0) {
-                container.style.display = 'none';
-                return;
+                container.style.display = 'none'; return;
             }
             container.style.display = 'flex';
             favs.forEach(fav => {
                 let div = document.createElement('div');
                 div.className = 'w-fav-item';
                 div.innerHTML = `${fav.cityName} ${fav.districtName}`;
-                div.onclick = () => loadLocation(fav.cityId, fav.districtName, fav.cityName);
+                div.onclick = () => loadLocation(fav.cityName, fav.districtName, true);
                 list.appendChild(div);
             });
             checkStarStatus();
         }
 
         function toggleFavorite() {
-            const cityId = citySelect.value;
-            const cityName = citySelect.options[citySelect.selectedIndex].text;
+            const cityName = citySelect.value;
             const districtName = districtSelect.value;
-            
-            if(!cityId || !districtName) return;
+            if(!cityName || !districtName) return;
 
             let favs = getFavorites();
-            const existsIndex = favs.findIndex(f => f.cityId === cityId && f.districtName === districtName);
+            const existsIndex = favs.findIndex(f => f.cityName === cityName && f.districtName === districtName);
             
             if (existsIndex > -1) {
                 favs.splice(existsIndex, 1);
                 alert('已從最愛移除。');
             } else {
-                favs.push({ cityId, cityName, districtName });
-                alert('已加入瀏覽器最愛清單！');
+                favs.push({ cityName, districtName });
+                alert('已加入最愛！');
             }
             localStorage.setItem('weatherFavs', JSON.stringify(favs));
             renderFavorites();
         }
 
         function checkStarStatus() {
+            const cityName = citySelect.value;
             const districtName = districtSelect.value;
             if(!districtName) { starBtn.style.display = 'none'; return; }
-            
             starBtn.style.display = 'flex';
             const favs = getFavorites();
-            const isFav = favs.some(f => f.cityId === citySelect.value && f.districtName === districtName);
-            if(isFav) {
-                starBtn.classList.add('active'); starBtn.innerHTML = '★';
-            } else {
-                starBtn.classList.remove('active'); starBtn.innerHTML = '☆';
-            }
+            const isFav = favs.some(f => f.cityName === cityName && f.districtName === districtName);
+            starBtn.classList.toggle('active', isFav);
+            starBtn.innerHTML = isFav ? '★' : '☆';
         }
 
-        // 載入氣象資料 (Fetch API)
-        async function fetchWeatherData(cityId) {
-            document.getElementById('w-loading').style.display = 'block';
-            document.getElementById('w-chart-container').style.display = 'none';
-            document.getElementById('w-cards-container').innerHTML = '';
-            document.getElementById('w-time-tabs').innerHTML = '';
-            
-            try {
-                // 如果沒有 API KEY，提供 Mock 錯誤處理，避免破壞畫面
-                if(CWA_API_KEY === 'YOUR_CWA_API_KEY') {
-                    throw new Error("請至原始碼替換 CWA_API_KEY。");
-                }
+        // 轉換 WMO 氣象代碼為文字與圖示
+        function getWxInfo(code) {
+            if(code === 0) return { desc: '晴天', icon: '☀️' };
+            if(code <= 3) return { desc: '多雲', icon: '⛅' };
+            if(code <= 48) return { desc: '霧', icon: '🌫️' };
+            if(code <= 69) return { desc: '雨天', icon: '🌧️' };
+            if(code <= 82) return { desc: '陣雨', icon: '🌦️' };
+            if(code <= 99) return { desc: '雷雨', icon: '⛈️' };
+            return { desc: '未知', icon: '🌤️' };
+        }
 
-                const res = await fetch(`https://opendata.cwa.gov.tw/api/v1/rest/datastore/${cityId}?Authorization=${CWA_API_KEY}&format=JSON`);
-                const json = await res.json();
-                currentWeatherData = json.records.Locations[0].Location;
+        // 主分頁切換邏輯
+        function switchMainTab(tabId) {
+            document.querySelectorAll('.w-main-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.w-tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+        }
+
+        // 獲取氣象資料 (包含 Hourly 與 Daily)
+        async function fetchWeatherData(cityName) {
+            document.getElementById('w-loading').style.display = 'block';
+            document.getElementById('main-tabs-nav').style.display = 'none';
+            document.getElementById('tab-hourly').classList.remove('active');
+            document.getElementById('tab-daily').classList.remove('active');
+            
+            const cityInfo = locationData[cityName];
+
+            try {
+                // 向 Open-Meteo 請求 Hourly(溫度,濕度,降雨率) 與 Daily(最高最低溫,氣象碼)
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${cityInfo.lat}&longitude=${cityInfo.lon}&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,weathercode&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTaipei&forecast_days=7`;
+                const res = await fetch(url);
+                currentWeatherData = await res.json();
                 
-                // 填充鄉鎮區
                 districtSelect.innerHTML = '<option value="">-- 請選擇鄉鎮區 --</option>';
-                currentWeatherData.forEach(loc => {
+                cityInfo.districts.forEach(dist => {
                     let opt = document.createElement('option');
-                    opt.value = loc.LocationName;
-                    opt.textContent = loc.LocationName;
+                    opt.value = dist;
+                    opt.textContent = dist;
                     districtSelect.appendChild(opt);
                 });
                 districtSelect.disabled = false;
             } catch (err) {
-                document.getElementById('w-cards-container').innerHTML = `<div style="text-align:center; padding:20px; color:#ff5252;">API 請求失敗，請確認 API 金鑰設定：<br>${err.message}</div>`;
+                document.getElementById('w-location-display').innerHTML = `<span style="color:#ff5252;">資料獲取失敗，請檢查網路連線。</span>`;
             } finally {
                 document.getElementById('w-loading').style.display = 'none';
             }
         }
 
-        // 渲染指定鄉鎮的資料
+        // 渲染資料 (負責分配給 Hourly 與 Daily 渲染函數)
         function renderDistrictData(districtName) {
             if(!currentWeatherData || !districtName) return;
-            const locData = currentWeatherData.find(l => l.LocationName === districtName);
-            if(!locData) return;
 
-            document.getElementById('w-location-display').innerHTML = `<strong>${citySelect.options[citySelect.selectedIndex].text} ${districtName}</strong>`;
+            document.getElementById('w-location-display').innerHTML = `<strong>${citySelect.value} ${districtName}</strong>`;
+            document.getElementById('main-tabs-nav').style.display = 'flex';
             
-            // 解析 WeatherElement
-            let parsedData = {};
-            let chartLabels = [];
-            let chartTemp = [];
-            let chartRh = [];
+            // 預設回到第一個 Tab
+            document.querySelectorAll('.w-main-tab-btn')[0].click();
 
-            locData.WeatherElement.forEach(el => {
-                const name = el.ElementName;
-                el.Time.forEach((t, i) => {
-                    const timeKey = t.StartTime;
-                    if(!parsedData[timeKey]) parsedData[timeKey] = { start: t.StartTime, end: t.EndTime };
-                    
-                    const val = t.ElementValue[0][Object.keys(t.ElementValue[0])[0]];
-                    if(name === '天氣現象') parsedData[timeKey].wx = val;
-                    if(name === '溫度') { 
-                        parsedData[timeKey].t = val;
-                        if(i < 8) { // 圖表只取前幾個時段
-                            let d = new Date(t.StartTime);
-                            chartLabels.push(`${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:00`);
-                            chartTemp.push(val);
-                        }
-                    }
-                    if(name === '12小時降雨機率') parsedData[timeKey].pop = val || '0';
-                    if(name === '相對濕度') {
-                        parsedData[timeKey].rh = val;
-                        if(i < 8) chartRh.push(val);
-                    }
+            renderHourlyData();
+            renderDailyData();
+            checkStarStatus();
+        }
+
+        function renderHourlyData() {
+            let chartLabels = [], chartTemp = [], chartRh = [], parsedData = [];
+            const hourly = currentWeatherData.hourly;
+            
+            const now = new Date();
+            let startIndex = hourly.time.findIndex(t => new Date(t) >= now);
+            if (startIndex === -1) startIndex = 0;
+            if (startIndex > 0) startIndex -= 1;
+
+            // 擷取接下來的 6 個時段 (每 3 小時跳一格)
+            for(let i = 0; i < 6; i++) {
+                let dataIndex = startIndex + (i * 3);
+                if(dataIndex >= hourly.time.length) break;
+
+                let d = new Date(hourly.time[dataIndex]);
+                let tLabel = `${d.getHours().toString().padStart(2, '0')}:00`;
+                let eLabel = `${((d.getHours() + 3) % 24).toString().padStart(2, '0')}:00`;
+                let wxInfo = getWxInfo(hourly.weathercode[dataIndex]);
+
+                parsedData.push({
+                    start: tLabel, end: eLabel,
+                    t: Math.round(hourly.temperature_2m[dataIndex]),
+                    rh: hourly.relative_humidity_2m[dataIndex],
+                    pop: hourly.precipitation_probability[dataIndex] || 0,
+                    wx: wxInfo.desc
                 });
-            });
+                
+                chartLabels.push(`${d.getMonth()+1}/${d.getDate()} ${tLabel}`);
+                chartTemp.push(Math.round(hourly.temperature_2m[dataIndex]));
+                chartRh.push(hourly.relative_humidity_2m[dataIndex]);
+            }
 
-            // 繪製圖表
             renderChart(chartLabels, chartTemp, chartRh);
 
-            // 建立時段 Tabs & Cards
             const tabsContainer = document.getElementById('w-time-tabs');
             const cardsContainer = document.getElementById('w-cards-container');
-            tabsContainer.innerHTML = '';
-            cardsContainer.innerHTML = '';
+            tabsContainer.innerHTML = ''; cardsContainer.innerHTML = '';
 
-            let isFirst = true;
-            Object.values(parsedData).forEach((data, index) => {
-                if(!data.wx) return; // 略過不完整的資料
-
-                let d = new Date(data.start);
-                let timeStr = `${d.getHours().toString().padStart(2, '0')}:00`;
-
-                // Tab
+            parsedData.forEach((data, index) => {
+                let isFirst = (index === 0);
                 let tab = document.createElement('button');
                 tab.className = `w-time-tab ${isFirst ? 'active' : ''}`;
-                tab.textContent = timeStr;
+                tab.textContent = data.start;
                 tab.onclick = (e) => {
                     document.querySelectorAll('.w-time-tab').forEach(b => b.classList.remove('active'));
                     e.target.classList.add('active');
@@ -458,11 +480,10 @@
                 };
                 tabsContainer.appendChild(tab);
 
-                // Card
                 let advice = "氣溫適中。";
-                if(data.t > 30) advice = "天氣炎熱，請多補充水分。";
+                if(data.t > 28) advice = "天氣炎熱，請多補充水分。";
                 if(data.t < 20) advice = "氣溫較低，建議添加外套。";
-                if(data.pop > 40) advice += " 降雨機率高，出門請攜帶雨具。";
+                if(data.pop > 40) advice += " 降雨機率偏高，出門請攜帶雨具。";
 
                 let card = document.createElement('div');
                 card.id = `w-card-${index}`;
@@ -480,10 +501,34 @@
                     </div>
                 `;
                 cardsContainer.appendChild(card);
-                isFirst = false;
             });
+        }
 
-            checkStarStatus();
+        function renderDailyData() {
+            const container = document.getElementById('w-daily-container');
+            container.innerHTML = '';
+            const daily = currentWeatherData.daily;
+            const weekDays = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+
+            for(let i = 1; i < daily.time.length; i++) { // 從明天開始算
+                let d = new Date(daily.time[i]);
+                let dayName = weekDays[d.getDay()];
+                let dateStr = `${d.getMonth()+1}/${d.getDate()}`;
+                let wxInfo = getWxInfo(daily.weathercode[i]);
+                let maxT = Math.round(daily.temperature_2m_max[i]);
+                let minT = Math.round(daily.temperature_2m_min[i]);
+                let pop = daily.precipitation_probability_max[i] || 0;
+
+                container.innerHTML += `
+                    <div class="w-daily-card">
+                        <div class="w-daily-date">${dateStr} (${dayName})</div>
+                        <div class="w-daily-icon">${wxInfo.icon}</div>
+                        <div style="color: #aaa; font-size: 0.9rem;">${wxInfo.desc}</div>
+                        <div class="w-daily-temp">${maxT}° / <span class="w-daily-min">${minT}°</span></div>
+                        <div style="font-size: 0.85rem; margin-top: 5px; color: #80d8ff;">降雨 ${pop}%</div>
+                    </div>
+                `;
+            }
         }
 
         function renderChart(labels, temps, rhs) {
@@ -497,7 +542,7 @@
                     labels: labels,
                     datasets: [
                         { label: '溫度 (°C)', data: temps, borderColor: '#ff8a80', backgroundColor: '#ff8a80', yAxisID: 'y' },
-                        { label: '濕度 (%)', data: rhs, borderColor: '#4fc3f7', backgroundColor: 'rgba(79,195,247,0.2)', fill: true, yAxisID: 'y1' }
+                        { label: '濕度 (%)', data: rhs, borderColor: '#4fc3f7', backgroundColor: 'rgba(79,195,247,0.2)', fill: true, yAxisID: 'y1', tension: 0.4 }
                     ]
                 },
                 options: {
@@ -505,8 +550,8 @@
                     plugins: { legend: { labels: { color: '#ccc' } } },
                     scales: {
                         x: { ticks: { color: '#ccc' }, grid: { color: 'rgba(255,255,255,0.1)' } },
-                        y: { type: 'linear', display: true, position: 'left', ticks: { color: '#ff8a80' } },
-                        y1: { type: 'linear', display: true, position: 'right', ticks: { color: '#4fc3f7' }, grid: { drawOnChartArea: false } }
+                        y: { type: 'linear', display: true, position: 'left', ticks: { color: '#ff8a80' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                        y1: { type: 'linear', display: true, position: 'right', ticks: { color: '#4fc3f7' }, grid: { drawOnChartArea: false }, min: 0, max: 100 }
                     }
                 }
             });
@@ -525,17 +570,19 @@
 
         starBtn.addEventListener('click', toggleFavorite);
 
-        async function loadLocation(cityId, districtName, cityName) {
-            citySelect.value = cityId;
-            await fetchWeatherData(cityId);
+        async function loadLocation(cityName, districtName, scroll = false) {
+            citySelect.value = cityName;
+            await fetchWeatherData(cityName);
             districtSelect.value = districtName;
             renderDistrictData(districtName);
-            // 捲動至展示區
-            document.getElementById('weather-demo').scrollIntoView({behavior: 'smooth'});
+            if (scroll) document.getElementById('weather-demo').scrollIntoView({behavior: 'smooth'});
         }
 
-        // 初始化
+        // 頁面初始化：載入我的最愛，並自動載入預設的南臺所在地氣象
         renderFavorites();
+        window.addEventListener('DOMContentLoaded', () => {
+            loadLocation('臺南市', '永康區'); 
+        });
 
     </script>
 </body>
