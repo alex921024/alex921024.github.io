@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yang Jinfong | Portfolio</title>
+    <title>Yang Jinfong | Portfolio & Weather App</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
+        /* ================= Portfolio 原有樣式 ================= */
         :root {
             --primary: #3b82f6;
             --accent: #10b981;
@@ -19,7 +22,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
         body { font-family: 'Poppins', 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--dark); overflow-x: hidden; }
 
-        /* 導航列優化 */
         nav {
             position: fixed; width: 100%; top: 0; z-index: 1000;
             background: var(--glass); backdrop-filter: blur(10px);
@@ -30,7 +32,6 @@
         .nav-links a { text-decoration: none; color: var(--dark); margin-left: 25px; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--primary); }
 
-        /* Hero 區塊：加入動態背景 */
         .hero {
             height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
             background: radial-gradient(circle at top right, #dbeafe, transparent), radial-gradient(circle at bottom left, #fef3c7, transparent);
@@ -38,31 +39,21 @@
         }
         .hero h1 { font-size: clamp(2.5rem, 8vw, 4rem); margin-bottom: 1rem; color: var(--dark); }
         .hero p { font-size: 1.2rem; color: #64748b; max-width: 600px; margin-bottom: 2rem; }
-        .btn { padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: 600; transition: 0.3s; cursor: pointer; }
+        .btn { padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: 600; transition: 0.3s; cursor: pointer; display: inline-block;}
         .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6); }
 
-        /* 容器與標題 */
         .container { max-width: 1100px; margin: 80px auto; padding: 0 20px; }
         .section-title { text-align: center; margin-bottom: 50px; }
         .section-title h2 { font-size: 2.2rem; display: inline-block; position: relative; padding-bottom: 10px; }
         .section-title h2::after { content: ''; position: absolute; bottom: 0; left: 25%; width: 50%; height: 4px; background: var(--primary); border-radius: 2px; }
 
-        /* 技能卡片優化 */
         .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         .skill-card { background: white; padding: 30px; border-radius: 20px; transition: 0.3s; border: 1px solid rgba(0,0,0,0.03); }
         .skill-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
         .skill-card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; }
         .skill-tag { display: inline-block; background: #eff6ff; color: var(--primary); padding: 4px 12px; border-radius: 15px; font-size: 0.85rem; margin: 4px; font-weight: 500; }
 
-        /* 專案卡片優化 */
-        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-        .project-card { background: white; border-radius: 20px; overflow: hidden; position: relative; border: 1px solid rgba(0,0,0,0.05); }
-        .project-content { padding: 25px; }
-        .project-content h3 { margin-bottom: 10px; color: var(--dark); }
-        .project-content p { color: #64748b; font-size: 0.95rem; margin-bottom: 15px; }
-
-        /* 時間軸：展現學習經歷 */
         .timeline { position: relative; max-width: 800px; margin: 0 auto; }
         .timeline::after { content: ''; position: absolute; width: 2px; background: #e2e8f0; top: 0; bottom: 0; left: 50%; margin-left: -1px; }
         .timeline-item { padding: 10px 40px; position: relative; width: 50%; }
@@ -83,6 +74,54 @@
             .right { left: 0%; }
             .nav-links { display: none; }
         }
+
+        /* ================= Weather App 獨立封裝樣式 (深色主題) ================= */
+        .weather-app-wrapper {
+            background-color: #1a1a1a;
+            border-radius: 20px;
+            padding: 30px;
+            color: #f0f0f0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .weather-app-wrapper * { box-sizing: border-box; }
+        
+        .w-header { background: rgba(30, 30, 30, 0.85); padding: 25px; border-radius: 12px; margin-bottom: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
+        .w-header h3 { color: #fff; margin-bottom: 10px; font-size: 1.8rem; }
+        .w-badges { display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap;}
+        .w-badge { display: inline-flex; align-items: center; background: rgba(0, 0, 0, 0.6); padding: 8px 15px; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.2); font-size: 0.9rem;}
+        
+        .w-fav-bar { display: none; gap: 10px; margin-bottom: 20px; padding: 15px; background: rgba(0, 0, 0, 0.4); border-radius: 8px; flex-wrap: wrap; align-items: center;}
+        .w-fav-item { background: rgba(255, 255, 255, 0.1); color: #fff; padding: 6px 15px; border-radius: 20px; font-size: 0.9em; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.2); transition: 0.2s; }
+        .w-fav-item:hover { border-color: #536dfe; }
+        
+        .w-search-box { display: flex; gap: 15px; background: rgba(30, 30, 30, 0.85); padding: 20px; border-radius: 12px; margin-bottom: 25px; flex-wrap: wrap; border: 1px solid rgba(255,255,255,0.1); }
+        .w-form-group { flex: 1; min-width: 180px; }
+        .w-form-group label { display: block; margin-bottom: 8px; color: #ddd; font-size: 0.9rem; }
+        .w-form-group select { width: 100%; padding: 10px; border-radius: 8px; background: rgba(44, 44, 44, 0.9); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1rem; outline: none;}
+        .w-btn-star { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); color: #ddd; font-size: 1.5rem; cursor: pointer; padding: 0 15px; border-radius: 8px; transition: 0.3s; display: flex; align-items: center; justify-content: center;}
+        .w-btn-star.active { color: #ffd700; border-color: #ffd700; }
+
+        .w-chart-container { background: rgba(30, 30, 30, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; margin-bottom: 25px; height: 350px; display: none;}
+        
+        .w-time-tabs { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 10px; }
+        .w-time-tab { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #ccc; padding: 8px 16px; border-radius: 20px; cursor: pointer; white-space: nowrap; transition: 0.2s; font-size: 0.95rem; }
+        .w-time-tab.active { background: #536dfe; color: white; border-color: #536dfe; }
+        
+        .w-card-wrapper { display: none; }
+        .w-card { background: rgba(30, 30, 30, 0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; }
+        .w-card-header { background: rgba(0, 0, 0, 0.4); padding: 15px; font-weight: bold; color: #8c9eff; }
+        .w-card-body { padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 15px; text-align: center; }
+        .w-info-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; }
+        .w-info-label { font-size: 0.85rem; color: #aaa; display: block; margin-bottom: 5px; }
+        .w-info-val { font-size: 1.2rem; font-weight: bold; }
+        
+        .w-advice { grid-column: 1 / -1; margin-top: 10px; padding: 15px; background: linear-gradient(90deg, rgba(62, 53, 73, 0.6), rgba(45, 45, 45, 0.6)); border-left: 4px solid #7c4dff; border-radius: 4px; text-align: left;}
+        
+        .loading-overlay { display: none; text-align: center; padding: 40px; color: #8c9eff; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -92,8 +131,8 @@
         <div class="nav-links">
             <a href="#about">關於</a>
             <a href="#skills">技能</a>
-            <a href="#projects">專案</a>
-            <a href="#timeline">歷程</a>
+            <a href="#projects">歷程與專案</a>
+            <a href="#weather-demo">天氣專案展示</a>
             <a href="https://github.com/alex921024" target="_blank"><i class="fab fa-github"></i></a>
         </div>
     </nav>
@@ -103,24 +142,20 @@
             <p>Hello, I'm</p>
             <h1>Yang Jinfong</h1>
             <p>就讀於南臺科技大學。熱衷於探索 <b>Web 全端開發</b> 與 <b>AI 機器學習</b> 的無限可能。</p>
-            <a href="#projects" class="btn btn-primary">查看我的專案</a>
+            <a href="#weather-demo" class="btn btn-primary">查看 Live Demo</a>
         </div>
     </header>
 
     <div class="container">
         <section id="about" data-aos="fade-up">
-            <div class="section-title">
-                <h2>關於我</h2>
-            </div>
+            <div class="section-title"><h2>關於我</h2></div>
             <div style="text-align: center; max-width: 800px; margin: 0 auto; font-size: 1.1rem; color: #475569;">
-                <p>我是一名專注於技術實踐的學生開發者。在南臺科大的學習過程中，我從基礎的 [Java] 與 [網路概論] 出發，逐步深入到 [PHP/MySQL 網頁開發]。最近我將重心放在 [生成式 AI (Stable Diffusion)] 與 [電腦視覺 (YOLO/DINO)] 的應用，致力於將 AI 技術整合進實務專案中。</p>
+                <p>我是一名專注於技術實踐的學生開發者。在南臺科大的學習過程中，我從基礎的 Java 與網路概論出發，逐步深入到 PHP/MySQL 網頁開發。最近我將重心放在生成式 AI (Stable Diffusion) 與電腦視覺 (YOLO/DINO) 的應用，致力於將 AI 技術整合進實務專案中。</p>
             </div>
         </section>
 
-        <section id="skills" data-aos="fade-up">
-            <div class="section-title">
-                <h2>技術棧</h2>
-            </div>
+        <section id="skills" data-aos="fade-up" style="margin-top: 80px;">
+            <div class="section-title"><h2>技術棧</h2></div>
             <div class="skills-grid">
                 <div class="skill-card">
                     <i class="fas fa-laptop-code"></i>
@@ -146,42 +181,55 @@
             </div>
         </section>
 
-        <section id="projects" data-aos="fade-up">
-            <div class="section-title">
-                <h2>精選專案</h2>
-            </div>
-            <div class="project-grid">
-                <div class="project-card">
-                    <div class="project-content">
-                        <span class="skill-tag">Web App</span>
-                        <h3>即時地震監測地圖</h3>
-                        <p>整合 API 實作即時震度顯示，並開發後台管理系統與使用者評價機制。</p>
-                        <a href="https://github.com/alex921024" style="color: var(--primary); text-decoration: none; font-weight: 600;">了解更多 →</a>
+        <section id="weather-demo" data-aos="fade-up" style="margin-top: 80px;">
+            <div class="section-title"><h2>Live Demo: 即時天氣與地震監測系統</h2></div>
+            <p style="text-align: center; color: #64748b; margin-bottom: 20px;">
+                此專案最初採用 PHP/MySQL 架構，為了在靜態網站中展示，我將其重構為<strong>純粹使用 JavaScript Fetch API</strong> 進行無伺服器 (Serverless) 呼叫中央氣象署資料，並結合 Chart.js 視覺化呈現。
+            </p>
+
+            <div class="weather-app-wrapper">
+                <div class="w-header">
+                    <h3>即時氣象查詢</h3>
+                    <div id="w-location-display" style="color: #bbb;">請選擇地區開始查詢</div>
+                    <div class="w-badges" id="w-badges-container" style="display: none;">
+                        <div class="w-badge" id="badge-aqi"></div>
                     </div>
                 </div>
-                <div class="project-card">
-                    <div class="project-content">
-                        <span class="skill-tag">AI/ML</span>
-                        <h3>Stable Diffusion UI 研究</h3>
-                        <p>深入研究 AI 繪圖工作流，優化模型生成效率與提示詞工程。</p>
-                        <a href="https://github.com/alex921024" style="color: var(--primary); text-decoration: none; font-weight: 600;">了解更多 →</a>
-                    </div>
+
+                <div id="w-fav-container" class="w-fav-bar">
+                    <span style="font-size: 0.9rem; color: #ffd700;">⭐ 我的最愛：</span>
+                    <div id="w-fav-list" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
                 </div>
-                <div class="project-card">
-                    <div class="project-content">
-                        <span class="skill-tag">Security</span>
-                        <h3>OAuth 認證系統整合</h3>
-                        <p>基於 Google API 實作安全登入流程，解決跨網域與 Session 同步問題。</p>
-                        <a href="https://github.com/alex921024" style="color: var(--primary); text-decoration: none; font-weight: 600;">了解更多 →</a>
+
+                <div class="w-search-box">
+                    <div class="w-form-group">
+                        <label>選擇縣市</label>
+                        <select id="w-city-select">
+                            <option value="">-- 請選擇縣市 --</option>
+                        </select>
                     </div>
+                    <div class="w-form-group">
+                        <label>選擇鄉鎮區</label>
+                        <select id="w-district-select" disabled>
+                            <option value="">-- 請先選擇縣市 --</option>
+                        </select>
+                    </div>
+                    <button id="w-btn-star" class="w-btn-star" style="display:none;" title="加入最愛">☆</button>
                 </div>
+
+                <div id="w-loading" class="loading-overlay"><i class="fas fa-spinner fa-spin"></i> 資料載入中，請稍候...</div>
+
+                <div class="w-chart-container" id="w-chart-container">
+                    <canvas id="w-tempChart"></canvas>
+                </div>
+
+                <div class="w-time-tabs" id="w-time-tabs"></div>
+                <div id="w-cards-container"></div>
             </div>
         </section>
 
-        <section id="timeline" data-aos="fade-up">
-            <div class="section-title">
-                <h2>學習歷程</h2>
-            </div>
+        <section id="timeline" data-aos="fade-up" style="margin-top: 80px;">
+            <div class="section-title"><h2>學習歷程</h2></div>
             <div class="timeline">
                 <div class="timeline-item left">
                     <div class="timeline-date">2026 / 01</div>
@@ -218,11 +266,277 @@
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 800,
-            offset: 100,
-            once: true
+        // 初始化動畫
+        AOS.init({ duration: 800, offset: 100, once: true });
+
+        /* ================= Weather App 前端邏輯 ================= */
+        // 請替換為真實的氣象署授權碼
+        const CWA_API_KEY = 'YOUR_CWA_API_KEY'; 
+
+        const cityMap = {
+            '臺北市': 'F-D0047-061', '新北市': 'F-D0047-069', '桃園市': 'F-D0047-053',
+            '臺中市': 'F-D0047-073', '臺南市': 'F-D0047-077', '高雄市': 'F-D0047-065',
+            '基隆市': 'F-D0047-049', '新竹縣': 'F-D0047-009', '新竹市': 'F-D0047-053',
+            '苗栗縣': 'F-D0047-013', '彰化縣': 'F-D0047-017', '南投縣': 'F-D0047-021',
+            '雲林縣': 'F-D0047-025', '嘉義縣': 'F-D0047-029', '嘉義市': 'F-D0047-057',
+            '屏東縣': 'F-D0047-033', '宜蘭縣': 'F-D0047-001', '花蓮縣': 'F-D0047-041',
+            '臺東縣': 'F-D0047-037', '澎湖縣': 'F-D0047-045', '金門縣': 'F-D0047-085',
+            '連江縣': 'F-D0047-081'
+        };
+
+        const citySelect = document.getElementById('w-city-select');
+        const districtSelect = document.getElementById('w-district-select');
+        const starBtn = document.getElementById('w-btn-star');
+        let currentWeatherData = null;
+        let chartInstance = null;
+
+        // 初始化縣市選單
+        Object.keys(cityMap).forEach(city => {
+            let opt = document.createElement('option');
+            opt.value = cityMap[city];
+            opt.textContent = city;
+            citySelect.appendChild(opt);
         });
+
+        // 讀取 LocalStorage 中的最愛清單
+        function getFavorites() {
+            return JSON.parse(localStorage.getItem('weatherFavs') || '[]');
+        }
+
+        function renderFavorites() {
+            const favs = getFavorites();
+            const container = document.getElementById('w-fav-container');
+            const list = document.getElementById('w-fav-list');
+            list.innerHTML = '';
+            
+            if (favs.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+            container.style.display = 'flex';
+            favs.forEach(fav => {
+                let div = document.createElement('div');
+                div.className = 'w-fav-item';
+                div.innerHTML = `${fav.cityName} ${fav.districtName}`;
+                div.onclick = () => loadLocation(fav.cityId, fav.districtName, fav.cityName);
+                list.appendChild(div);
+            });
+            checkStarStatus();
+        }
+
+        function toggleFavorite() {
+            const cityId = citySelect.value;
+            const cityName = citySelect.options[citySelect.selectedIndex].text;
+            const districtName = districtSelect.value;
+            
+            if(!cityId || !districtName) return;
+
+            let favs = getFavorites();
+            const existsIndex = favs.findIndex(f => f.cityId === cityId && f.districtName === districtName);
+            
+            if (existsIndex > -1) {
+                favs.splice(existsIndex, 1);
+                alert('已從最愛移除。');
+            } else {
+                favs.push({ cityId, cityName, districtName });
+                alert('已加入瀏覽器最愛清單！');
+            }
+            localStorage.setItem('weatherFavs', JSON.stringify(favs));
+            renderFavorites();
+        }
+
+        function checkStarStatus() {
+            const districtName = districtSelect.value;
+            if(!districtName) { starBtn.style.display = 'none'; return; }
+            
+            starBtn.style.display = 'flex';
+            const favs = getFavorites();
+            const isFav = favs.some(f => f.cityId === citySelect.value && f.districtName === districtName);
+            if(isFav) {
+                starBtn.classList.add('active'); starBtn.innerHTML = '★';
+            } else {
+                starBtn.classList.remove('active'); starBtn.innerHTML = '☆';
+            }
+        }
+
+        // 載入氣象資料 (Fetch API)
+        async function fetchWeatherData(cityId) {
+            document.getElementById('w-loading').style.display = 'block';
+            document.getElementById('w-chart-container').style.display = 'none';
+            document.getElementById('w-cards-container').innerHTML = '';
+            document.getElementById('w-time-tabs').innerHTML = '';
+            
+            try {
+                // 如果沒有 API KEY，提供 Mock 錯誤處理，避免破壞畫面
+                if(CWA_API_KEY === 'YOUR_CWA_API_KEY') {
+                    throw new Error("請至原始碼替換 CWA_API_KEY。");
+                }
+
+                const res = await fetch(`https://opendata.cwa.gov.tw/api/v1/rest/datastore/${cityId}?Authorization=${CWA_API_KEY}&format=JSON`);
+                const json = await res.json();
+                currentWeatherData = json.records.Locations[0].Location;
+                
+                // 填充鄉鎮區
+                districtSelect.innerHTML = '<option value="">-- 請選擇鄉鎮區 --</option>';
+                currentWeatherData.forEach(loc => {
+                    let opt = document.createElement('option');
+                    opt.value = loc.LocationName;
+                    opt.textContent = loc.LocationName;
+                    districtSelect.appendChild(opt);
+                });
+                districtSelect.disabled = false;
+            } catch (err) {
+                document.getElementById('w-cards-container').innerHTML = `<div style="text-align:center; padding:20px; color:#ff5252;">API 請求失敗，請確認 API 金鑰設定：<br>${err.message}</div>`;
+            } finally {
+                document.getElementById('w-loading').style.display = 'none';
+            }
+        }
+
+        // 渲染指定鄉鎮的資料
+        function renderDistrictData(districtName) {
+            if(!currentWeatherData || !districtName) return;
+            const locData = currentWeatherData.find(l => l.LocationName === districtName);
+            if(!locData) return;
+
+            document.getElementById('w-location-display').innerHTML = `<strong>${citySelect.options[citySelect.selectedIndex].text} ${districtName}</strong>`;
+            
+            // 解析 WeatherElement
+            let parsedData = {};
+            let chartLabels = [];
+            let chartTemp = [];
+            let chartRh = [];
+
+            locData.WeatherElement.forEach(el => {
+                const name = el.ElementName;
+                el.Time.forEach((t, i) => {
+                    const timeKey = t.StartTime;
+                    if(!parsedData[timeKey]) parsedData[timeKey] = { start: t.StartTime, end: t.EndTime };
+                    
+                    const val = t.ElementValue[0][Object.keys(t.ElementValue[0])[0]];
+                    if(name === '天氣現象') parsedData[timeKey].wx = val;
+                    if(name === '溫度') { 
+                        parsedData[timeKey].t = val;
+                        if(i < 8) { // 圖表只取前幾個時段
+                            let d = new Date(t.StartTime);
+                            chartLabels.push(`${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:00`);
+                            chartTemp.push(val);
+                        }
+                    }
+                    if(name === '12小時降雨機率') parsedData[timeKey].pop = val || '0';
+                    if(name === '相對濕度') {
+                        parsedData[timeKey].rh = val;
+                        if(i < 8) chartRh.push(val);
+                    }
+                });
+            });
+
+            // 繪製圖表
+            renderChart(chartLabels, chartTemp, chartRh);
+
+            // 建立時段 Tabs & Cards
+            const tabsContainer = document.getElementById('w-time-tabs');
+            const cardsContainer = document.getElementById('w-cards-container');
+            tabsContainer.innerHTML = '';
+            cardsContainer.innerHTML = '';
+
+            let isFirst = true;
+            Object.values(parsedData).forEach((data, index) => {
+                if(!data.wx) return; // 略過不完整的資料
+
+                let d = new Date(data.start);
+                let timeStr = `${d.getHours().toString().padStart(2, '0')}:00`;
+
+                // Tab
+                let tab = document.createElement('button');
+                tab.className = `w-time-tab ${isFirst ? 'active' : ''}`;
+                tab.textContent = timeStr;
+                tab.onclick = (e) => {
+                    document.querySelectorAll('.w-time-tab').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    document.querySelectorAll('.w-card-wrapper').forEach(c => c.style.display = 'none');
+                    document.getElementById(`w-card-${index}`).style.display = 'block';
+                };
+                tabsContainer.appendChild(tab);
+
+                // Card
+                let advice = "氣溫適中。";
+                if(data.t > 30) advice = "天氣炎熱，請多補充水分。";
+                if(data.t < 20) advice = "氣溫較低，建議添加外套。";
+                if(data.pop > 40) advice += " 降雨機率高，出門請攜帶雨具。";
+
+                let card = document.createElement('div');
+                card.id = `w-card-${index}`;
+                card.className = 'w-card-wrapper';
+                card.style.display = isFirst ? 'block' : 'none';
+                card.innerHTML = `
+                    <div class="w-card">
+                        <div class="w-card-header">${data.start} ~ ${data.end}</div>
+                        <div class="w-card-body">
+                            <div class="w-info-box"><span class="w-info-label">天氣</span><span class="w-info-val" style="color:#ffe082;">${data.wx}</span></div>
+                            <div class="w-info-box"><span class="w-info-label">溫度</span><span class="w-info-val" style="color:#ff8a80;">${data.t}°C</span></div>
+                            <div class="w-info-box"><span class="w-info-label">降雨機率</span><span class="w-info-val" style="color:#80d8ff;">${data.pop}%</span></div>
+                            <div class="w-advice"><strong>💡 智慧建議：</strong>${advice}</div>
+                        </div>
+                    </div>
+                `;
+                cardsContainer.appendChild(card);
+                isFirst = false;
+            });
+
+            checkStarStatus();
+        }
+
+        function renderChart(labels, temps, rhs) {
+            document.getElementById('w-chart-container').style.display = 'block';
+            const ctx = document.getElementById('w-tempChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: '溫度 (°C)', data: temps, borderColor: '#ff8a80', backgroundColor: '#ff8a80', yAxisID: 'y' },
+                        { label: '濕度 (%)', data: rhs, borderColor: '#4fc3f7', backgroundColor: 'rgba(79,195,247,0.2)', fill: true, yAxisID: 'y1' }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#ccc' } } },
+                    scales: {
+                        x: { ticks: { color: '#ccc' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+                        y: { type: 'linear', display: true, position: 'left', ticks: { color: '#ff8a80' } },
+                        y1: { type: 'linear', display: true, position: 'right', ticks: { color: '#4fc3f7' }, grid: { drawOnChartArea: false } }
+                    }
+                }
+            });
+        }
+
+        // 事件綁定
+        citySelect.addEventListener('change', (e) => {
+            districtSelect.innerHTML = '<option value="">-- 載入中 --</option>';
+            districtSelect.disabled = true;
+            if(e.target.value) fetchWeatherData(e.target.value);
+        });
+
+        districtSelect.addEventListener('change', (e) => {
+            renderDistrictData(e.target.value);
+        });
+
+        starBtn.addEventListener('click', toggleFavorite);
+
+        async function loadLocation(cityId, districtName, cityName) {
+            citySelect.value = cityId;
+            await fetchWeatherData(cityId);
+            districtSelect.value = districtName;
+            renderDistrictData(districtName);
+            // 捲動至展示區
+            document.getElementById('weather-demo').scrollIntoView({behavior: 'smooth'});
+        }
+
+        // 初始化
+        renderFavorites();
+
     </script>
 </body>
 </html>
