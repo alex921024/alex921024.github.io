@@ -48,5 +48,5 @@
 ### 📫 如何聯繫我 (Contact Me)
 
 - **Email**: [u1050075Alex@gmail.com](mailto:u1050075Alex@gmail.com)
-- **LinkedIn**: [Yang Jinfong](#) ---
-<p align="right">最後更新於：2026年3月</p>
+- **LinkedIn**: [Yang Jinfong](mailto:u1050075Alex@gmail.com)
+<p align="right">最後更新於：2026年6月</p>
