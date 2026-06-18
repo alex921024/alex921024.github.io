@@ -4,6 +4,12 @@
   <img src="https://komarev.com/ghpvc/?username=alex921024&label=Profile%20views&color=0e75b6&style=flat" alt="alex921024" />
 </p>
 
+<p align="center">
+  <a href="https://alex921024.github.io/" target="_blank">
+    <img src="https://img.shields.io/badge/🌐_Visit_My_Portfolio-0f172a?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Portfolio" />
+  </a>
+</p>
+
 ---
 
 ### 🚀 關於我 (About Me)
@@ -12,6 +18,7 @@
 - 💻 熱衷於 **Web 全端開發** (PHP, JS, HTML/CSS) 與 **系統架構**。
 - 🤖 對 **人工智慧 (AI)** 有濃厚興趣，特別是 Stable Diffusion 影像生成與 YOLO 物件偵測。
 - 🛡️ 研究過 **網路安全**，對 DDoS 攻擊防禦與伺服器加固（Apache/OpenSSL）有實作經驗。
+- 🌐 歡迎參觀我的 **[個人作品集網站](https://alex921024.github.io/)**，裡面有完整的專案展示與互動式 Demo。
 - 🎨 私下對 **VTuber 文化** 與 **遊戲設計** 充滿好奇。
 
 ---
@@ -29,6 +36,7 @@
 
 ### 📂 近期專案 (Recent Projects)
 
+- 🛡️ **資安防禦訓練系統 (Cyber Security Defense Simulator)**：基於 ES6 模組化架構開發的網頁防禦模擬器。實作終端機指令介面、IDS 入侵偵測、防火牆規則部署與 Wireshark 流量監控，能動態模擬並防禦 DDoS、SYN Flood 等網路攻擊與社交工程釣魚郵件。
 - 🌍 **即時地震監測地圖**：結合 Google Maps API 與即時資料，支援使用者評分與管理後台。
 - 🔑 **Google OAuth 整合實作**：強化網站驗證機制，提升登入安全性與便利性。
 - 🖼️ **Base64 影像存儲系統**：優化 Web 端與 MySQL 資料庫間的影像編碼傳輸效率。
@@ -45,8 +53,10 @@
 
 ---
 
-### 📫 如何聯繫我 (Contact Me)
+### 📫 如何聯繫我 & 更多資訊 (Contact & More)
 
-- **Email**: [u1050075Alex@gmail.com](mailto:u1050075Alex@gmail.com)
-- **LinkedIn**: [Yang Jinfong](mailto:u1050075Alex@gmail.com)
+- 🌐 **Portfolio (個人網站)**: [https://alex921024.github.io/](https://alex921024.github.io/)
+- ✉️ **Email**: [u1050075Alex@gmail.com](mailto:u1050075Alex@gmail.com)
+- 💼 **LinkedIn**: [Yang Jinfong](mailto:u1050075Alex@gmail.com)
+
 <p align="right">最後更新於：2026年6月</p>
